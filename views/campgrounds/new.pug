@@ -1,0 +1,14 @@
+include ../partials/head
+body
+  include ../partials/nav
+  main.container
+    h1.mt-5 Add a new campsite!
+    form(action="/campgrounds", method="POST") 
+      div
+        label(for="title") Title:
+        input(type="text" id="title" name="campgrounds[title]")
+      div
+        label(for="location") Location (Address):
+        input(type="text" id="location" name="campgrounds[location]")
+      button(type="submit") Add Campground
+  include ../partials/footer

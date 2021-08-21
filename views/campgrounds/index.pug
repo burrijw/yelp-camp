@@ -1,0 +1,10 @@
+include ../partials/head
+body
+  include ../partials/nav
+  main.container
+    h1.mt-5 All Campgrounds
+    ul
+    each campground in campgrounds
+      li
+        a(href=`campgrounds/${campground._id}`)= campground.title
+  include ../partials/footer

@@ -1,0 +1,25 @@
+{
+  "name": "yelp-camp",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "run": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "express": "^4.17.1",
+    "faker": "^5.5.3",
+    "mathjs": "^9.4.4",
+    "mongoose": "^5.13.7",
+    "pug": "^3.0.2",
+    "pug-cli": "^1.0.0-alpha6",
+    "sugar": "^2.0.6"
+  },
+  "dependencies": {
+    "method-override": "^3.0.0"
+  }
+}
