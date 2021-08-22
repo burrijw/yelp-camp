@@ -20,6 +20,7 @@
     "sugar": "^2.0.6"
   },
   "dependencies": {
-    "method-override": "^3.0.0"
+    "method-override": "^3.0.0",
+    "morgan": "^1.10.0"
   }
 }

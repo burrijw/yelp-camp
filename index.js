@@ -3,6 +3,7 @@ const app = express();
 const path = require("path");
 const mongoose = require("mongoose");
 const methodOverride = require("method-override");
+const morgan = require("morgan");
 const Campground = require("./models/campground");
 
 // connect db
@@ -23,6 +24,7 @@ mongoose
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
+app.use(morgan("tiny"));
 
 // * VIEW ENGINE
 
@@ -38,6 +40,12 @@ app.get("/", (req, res) => {
 // create
 app.get("/campgrounds/new", (req, res) => {
   res.render("campgrounds/new");
+});
+
+app.post("/campgrounds", async (req, res) => {
+  const campground = new Campground(req.body.campground);
+  await campground.save();
+  res.redirect(`/campgrounds/${campground._id}`);
 });
 
 //read
@@ -75,6 +83,12 @@ app.delete("/campgrounds/:id", async (req, res) => {
   const { id } = req.params;
   await Campground.findByIdAndDelete(id);
   res.redirect("/campgrounds");
+});
+
+// 404 Page
+
+app.use((req, res) => {
+  res.status(404).send("The requested page or resource could not be found");
 });
 
 // * LISTENER...
