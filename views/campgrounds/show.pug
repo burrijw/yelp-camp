@@ -1,12 +1,11 @@
-include ../partials/head
-body
-  include ../partials/nav
-  main.container
-    h1.mt-5= campground.title 
-    h2= campground.location
-    form(action=`/campgrounds/${campground._id}?_method=DELETE`, method="POST")
-      button(type="submit") Delete
-    button 
-      a(href=`/campgrounds/${campground._id}/edit`)  Edit
-    
-  include ../partials/footer
+extends ../index
+block content
+  img(src=`${campground.image}`, alt="image of a campground").mw-100
+  h1.mt-5= campground.title 
+  h2= campground.location
+  p Price: $#{campground.price}/night
+  p #{campground.description}
+  form(action=`/campgrounds/${campground._id}?_method=DELETE`, method="POST")
+    button(type="submit") Delete
+  button 
+    a(href=`/campgrounds/${campground._id}/edit`)  Edit

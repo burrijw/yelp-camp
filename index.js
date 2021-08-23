@@ -34,7 +34,7 @@ app.set("views", path.join(__dirname, "views"));
 // * ROUTING
 
 app.get("/", (req, res) => {
-  res.render("home.pug");
+  res.render("index.pug");
 });
 
 // create

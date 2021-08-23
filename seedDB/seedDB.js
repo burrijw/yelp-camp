@@ -23,10 +23,11 @@ const seedData = async () => {
   for (let i = 0; i < 50; i++) {
     const camp = new Campground({
       title: faker.fake("{{address.streetName}} Campground").titleize(),
+      image: "https://source.unsplash.com/collection/220381",
       price: faker.commerce.price(),
       description: faker.lorem.sentences(),
       location: faker.fake(
-        "{{datatype.number}} {{address.streetName}}, {{address.city}} {{address.state}} {{address.zipCode}}"
+        "{{datatype.number}} {{address.streetName}}, {{address.city}}, {{address.state}} {{address.zipCode}}"
       ),
     });
     await camp.save();
@@ -34,7 +35,6 @@ const seedData = async () => {
   }
 };
 
-seedData()
-  .then(() => {
-    console.log('done');
-  });
+seedData().then(() => {
+  console.log("done");
+});

@@ -1,15 +1,13 @@
-include ../partials/head
-body
-  include ../partials/nav
-  main.container
-    h1.mt-5 Edit "#{campground.title}"!
-    form(action=`/campgrounds/${campground._id}?_method=PUT`, method="POST") 
-      div
-        label(for="title") Title:
-        input(type="text" id="title" name="campground[title]" value=`${campground.title}` )
-      div
-        label(for="location") Location (Address):
-        input(type="text" id="location" name="campground[location]" value=`${campground.location}`)
-      button(type="submit") Save Changes
-      a(href=`/campgrounds/${campground._id}`) Back to #{campground.title}
-  include ../partials/footer
+extends ../index
+block content
+  h1.mt-5 Edit "#{campground.title}"!
+  form(action=`/campgrounds/${campground._id}?_method=PUT`, method="POST") 
+    div
+      label(for="title") Title:
+      input(type="text" id="title" name="campground[title]" value=`${campground.title}` )
+    div
+      label(for="location") Location (Address):
+      input(type="text" id="location" name="campground[location]" value=`${campground.location}`)
+    button(type="submit") Save Changes
+    a(href=`/campgrounds/${campground._id}`) Back to #{campground.title}
+
