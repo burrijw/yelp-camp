@@ -1,7 +1,16 @@
 extends ../index
 block content
   h1.mt-5 All Campgrounds
-  ul
-    each campground in campgrounds
-      li
-        a(href=`campgrounds/${campground._id}`)= campground.title
+  .columns
+    .row.row-cols-3.g-5
+        each campground in campgrounds
+          .col
+            .card.h-100 
+              img(src=`${campground.image}`, alt="").card-image-top
+              .card-body 
+                h4.card-title  #{campground.title}
+                h5.card-subtitle #{campground.location.city}
+                p.card-text #{campground.description}
+              .card-footer
+                a(href=`/campgrounds/${campground._id}`) View
+

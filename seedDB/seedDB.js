@@ -21,14 +21,18 @@ mongoose
 const seedData = async () => {
   await Campground.deleteMany({});
   for (let i = 0; i < 50; i++) {
+    const state = faker.address.state();
     const camp = new Campground({
       title: faker.fake("{{address.streetName}} Campground").titleize(),
       image: "https://source.unsplash.com/collection/220381",
       price: faker.commerce.price(),
       description: faker.lorem.sentences(),
-      location: faker.fake(
-        "{{datatype.number}} {{address.streetName}}, {{address.city}}, {{address.state}} {{address.zipCode}}"
-      ),
+      location: {
+        address: faker.fake("{{datatype.number}} {{address.streetName}}"),
+        city: faker.address.city(),
+        state: state,
+        zipcode: faker.address.zipCodeByState(state),
+      },
     });
     await camp.save();
     console.log(`added new site to db`);
