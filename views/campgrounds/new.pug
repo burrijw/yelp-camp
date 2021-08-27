@@ -1,12 +1,28 @@
 extends ../layout
 block content
-  h1.my-4 Add a new campsite
-  form(action="/campgrounds", method="POST")
-    div.mb-3
-      label(for="title").form-label Title:
-      input(type="text" id="title" name="campground[title]").form-control
-    div.mb-3
-      label(for="location").form-label Location (Address):
-      input(type="text" id="location" name="campground[location]").form-control
-    div
-      button(type="submit").btn.btn-success.my-3 Add Campground
+  div.col-md-6.mx-auto
+    h1.my-4 Add a new campsite
+    form(action="/campgrounds", method="POST")
+      div.mb-3
+        label(for="title").form-label Title:
+        input(type="text" id="title" name="campground[title]").form-control
+      div.mb-3
+        label(for="address").form-label Street Address:
+        input(type="text" id="address" name="campground[location][address]").form-control
+      div.mb-3
+        label(for="city").form-label City:
+        input(type="text" id="city" name="campground[location][city]").form-control
+      div.mb-3.row
+        div.col
+          //- todo: Make this a dropdown
+          //- label(for="state").form-label State:
+          //- input(type="text" id="state" name="campground[location][state]").form-control
+          label(for="state").form-label State: 
+          select.form-select(id="state")
+            for state in states
+              option(value=`${state}`) #{state}
+        div.col
+          label(for="zipcode").form-label Zip Code:
+          input(type="text" id="zipcode" name="campground[location][zipcode]").form-control
+      div.col.mx-auto
+        button(type="submit").btn.btn-success.my-3 Add Campground

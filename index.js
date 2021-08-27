@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const methodOverride = require("method-override");
 const morgan = require("morgan");
 const Campground = require("./models/campground");
+const states = require("./seed/states");
 
 // connect db
 mongoose
@@ -39,7 +40,7 @@ app.get("/", (req, res) => {
 
 // create
 app.get("/campgrounds/new", (req, res) => {
-  res.render("campgrounds/new");
+  res.render("campgrounds/new", { states });
 });
 
 app.post("/campgrounds", async (req, res) => {
