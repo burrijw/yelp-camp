@@ -24,15 +24,10 @@ const seedData = async () => {
     const state = faker.address.state();
     const camp = new Campground({
       title: faker.fake("{{address.streetName}} Campground").titleize(),
-      image: "https://source.unsplash.com/collection/220381",
+      image: "https://source.unsplash.com/collection/220381/1600x900",
       price: faker.commerce.price(),
       description: faker.lorem.sentences(),
-      location: {
-        address: faker.fake("{{datatype.number}} {{address.streetName}}"),
-        city: faker.address.city(),
-        state: state,
-        zipcode: faker.address.zipCodeByState(state),
-      },
+      location: `${faker.address.cityName()}, ${state}`,
     });
     await camp.save();
     console.log(`added new site to db`);

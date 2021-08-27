@@ -1,11 +1,12 @@
-extends ../index
+extends ../layout
 block content
-  h1.mt-5 Add a new campsite!
-  form(action="/campgrounds", method="POST") 
+  h1.my-4 Add a new campsite
+  form(action="/campgrounds", method="POST")
+    div.mb-3
+      label(for="title").form-label Title:
+      input(type="text" id="title" name="campground[title]").form-control
+    div.mb-3
+      label(for="location").form-label Location (Address):
+      input(type="text" id="location" name="campground[location]").form-control
     div
-      label(for="title") Title:
-      input(type="text" id="title" name="campground[title]")
-    div
-      label(for="location") Location (Address):
-      input(type="text" id="location" name="campground[location]")
-    button(type="submit") Add Campground
+      button(type="submit").btn.btn-success.my-3 Add Campground

@@ -1,16 +1,16 @@
-extends ../index
+extends ../layout
 block content
-  h1.mt-5 All Campgrounds
-  .columns
-    .row.row-cols-3.g-5
+  h1.my-5 All Campgrounds
+  .columns.mb-5
+    .row.row-cols-1.gy-4.row-cols-lg-3
         each campground in campgrounds
           .col
             .card.h-100 
               img(src=`${campground.image}`, alt="").card-image-top
               .card-body 
-                h4.card-title  #{campground.title}
-                h5.card-subtitle #{campground.location.city}
+                h4.card-title.mb-3  #{campground.title}
+                h5.card-subtitle.text-muted.mb-3 #{campground.location}
                 p.card-text #{campground.description}
               .card-footer
-                a(href=`/campgrounds/${campground._id}`) View
+                a(href=`/campgrounds/${campground._id}`).btn.btn-primary.text-white View
 

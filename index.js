@@ -34,7 +34,7 @@ app.set("views", path.join(__dirname, "views"));
 // * ROUTING
 
 app.get("/", (req, res) => {
-  res.render("index.pug");
+  res.render("layout.pug");
 });
 
 // create
@@ -67,13 +67,9 @@ app.get("/campgrounds/:id/edit", async (req, res) => {
 
 app.put("/campgrounds/:id", async (req, res) => {
   const { id } = req.params;
-  const campground = await Campground.findByIdAndUpdate(
-    id,
-    {
-      ...req.body.campground,
-    },
-    { new: true }
-  );
+  const campground = await Campground.findByIdAndUpdate(id, {
+    ...req.body.campground,
+  });
   res.redirect(`/campgrounds/${campground._id}`);
 });
 

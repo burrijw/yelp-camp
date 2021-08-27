@@ -1,10 +1,8 @@
-extends ../index
+extends ../layout
 block content
-  - const loc = campground.location
   img(src=`${campground.image}`, alt="image of a campground").mw-100
-  h1.mt-5= campground.title 
-  h2 #{loc.address}
-  h3 #{loc.city} #{loc.state} 
+  h1.my-3= campground.title 
+  h2 #{campground.location}
   p Price: $#{campground.price}/night
   p #{campground.description}
   form(action=`/campgrounds/${campground._id}?_method=DELETE`, method="POST")
