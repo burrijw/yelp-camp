@@ -15,11 +15,11 @@ block content
       div.mb-3.row
         div.col
           label(for="state").form-label State: 
-          select.form-select(id="state")
+          select.form-select(id="state" name="campground[location][state]")
             for state in states
-              option(value=`${state}` name="campground[location][state]") #{state}
+              option(value=`${state}`) #{state}
         div.col
           label(for="zipcode").form-label Zip Code:
-          input(type="text" id="zipcode" name="campground[location][state]").form-control
+          input(type="text" id="zipcode" name="campground[location][zipcode]").form-control
       div.col.mx-auto
         button(type="submit").btn.btn-success.my-3 Add Campground
