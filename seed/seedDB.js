@@ -7,8 +7,6 @@ Sugar.extend();
 mongoose
   .connect("mongodb://localhost:27017/yelp-camp", {
     useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
   })
   .then(() => {
     console.log("successful connection to db: yelp-camp");
@@ -21,7 +19,7 @@ mongoose
 const seedData = async () => {
   await Campground.deleteMany({});
   for (let i = 0; i < 25; i++) {
-    const state = faker.address.state();
+    const state = faker.address.stateAbbr();
     const camp = new Campground({
       title: faker.fake("{{address.streetName}} Campground").titleize(),
       image: "https://source.unsplash.com/collection/220381/1600x900",

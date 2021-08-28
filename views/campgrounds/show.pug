@@ -2,7 +2,7 @@ extends ../layout
 block content
   img(src=`${campground.image}`, alt="image of a campground").mw-100
   h1.my-3= campground.title 
-  h2 #{campground.location}
+  h2 #{campground.location.city}, #{campground.location.state}
   p Price: $#{campground.price}/night
   p #{campground.description}
   form(action=`/campgrounds/${campground._id}?_method=DELETE`, method="POST")

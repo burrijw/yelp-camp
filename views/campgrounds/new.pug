@@ -14,15 +14,12 @@ block content
         input(type="text" id="city" name="campground[location][city]").form-control
       div.mb-3.row
         div.col
-          //- todo: Make this a dropdown
-          //- label(for="state").form-label State:
-          //- input(type="text" id="state" name="campground[location][state]").form-control
           label(for="state").form-label State: 
           select.form-select(id="state")
             for state in states
-              option(value=`${state}`) #{state}
+              option(value=`${state}` name="campground[location][state]") #{state}
         div.col
           label(for="zipcode").form-label Zip Code:
-          input(type="text" id="zipcode" name="campground[location][zipcode]").form-control
+          input(type="text" id="zipcode" name="campground[location][state]").form-control
       div.col.mx-auto
         button(type="submit").btn.btn-success.my-3 Add Campground
