@@ -6,9 +6,19 @@ const CampgroundSchema = new Schema({
     type: String,
     required: true,
   },
-  image: String,
-  price: Number,
-  description: String,
+  image: {
+    type: String,
+    default: "https://source.unsplash.com/collection/220381/1600x900",
+  },
+  price: {
+    type: String,
+    default: "0.00",
+  },
+  description: {
+    type: String,
+    default:
+      "Salutantibus vitae elit libero, a pharetra augue. Ab illo tempore, ab est sed immemorabili.",
+  },
   location: {
     address: String,
     city: String,

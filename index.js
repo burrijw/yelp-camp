@@ -12,8 +12,10 @@ mongoose.connect("mongodb://localhost:27017/yelp-camp", {
   useUnifiedTopology: true,
 });
 
-
-mongoose.connection.on("error", console.error.bind(console, "connection error:"));
+mongoose.connection.on(
+  "error",
+  console.error.bind(console, "connection error:")
+);
 mongoose.connection.once("open", () => {
   console.log("Database connected");
 });
@@ -53,7 +55,8 @@ app.get("/campgrounds/:id", async (req, res) => {
 });
 
 app.get("/campgrounds/:id/edit", async (req, res) => {
-  const campground = await Campground.findById(req.params.id);
+  const { id } = req.params;
+  const campground = await Campground.findById(id);
   res.render("campgrounds/edit", { campground });
 });
 
