@@ -12,9 +12,9 @@ mongoose.connect("mongodb://localhost:27017/yelp-camp", {
   useUnifiedTopology: true,
 });
 
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", () => {
+
+mongoose.connection.on("error", console.error.bind(console, "connection error:"));
+mongoose.connection.once("open", () => {
   console.log("Database connected");
 });
 
@@ -42,13 +42,9 @@ app.get("/campgrounds/new", (req, res) => {
 
 // ! Post a new campground to db and redir to that new campground
 app.post("/campgrounds", async (req, res) => {
-  // res.send(req.body.campground);
   const campground = new Campground(req.body.campground);
-  console.log(campground);
-  await campground.save().then(() => {
-    console.log("saved campground");
-  });
-  res.redirect(`/campgrounds`);
+  await campground.save();
+  res.redirect(`/campgrounds/${campground._id}`);
 });
 
 app.get("/campgrounds/:id", async (req, res) => {
