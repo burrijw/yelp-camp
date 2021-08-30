@@ -1,11 +1,17 @@
 extends ../layout
 block content
-  img(src=`${campground.image}`, alt="image of a campground").mw-100
   h1.my-3= campground.title 
-  h2 #{campground.location.city}, #{campground.location.state}
-  p Price: $#{campground.price}/night
-  p #{campground.description}
-  form(action=`/campgrounds/${campground._id}?_method=DELETE`, method="POST")
-    button(type="submit") Delete
-  button 
-    a(href=`/campgrounds/${campground._id}/edit`)  Edit
+  .row.mt-3.gx-5
+    .col-md-6
+      h2 #{campground.location.city}, #{campground.location.state}
+      img(src=`${campground.image}`, alt="image of a campground").mw-100
+      p Price: $#{campground.price} per night
+      p #{campground.description}
+      div.btn-group.btn-group-sm
+        a(role="button" href=`/campgrounds/${campground._id}/edit`).btn.btn-primary  Edit
+        form(action=`/campgrounds/${campground._id}?_method=DELETE`, method="POST")
+        button(type="submit").btn.btn-danger Delete
+    .col-md-6
+      h2 Reviews
+      p Lorem, ipsum dolor.
+      p Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque ipsum, rem deserunt dolorem nulla quas vel? In nobis tempore delectus quos voluptate excepturi, ad totam voluptatum, iusto consequuntur beatae sit, esse quaerat. Tempora voluptate, nulla molestias assumenda impedit a quisquam dicta molestiae fugit, distinctio ipsam!

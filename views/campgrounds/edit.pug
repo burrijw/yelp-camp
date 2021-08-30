@@ -1,14 +1,37 @@
 extends ../layout
 block content
-  h1.mt-5 Edit "#{campground.title}"!
-  //- todo: need to update edit form with location object props
-  form(action=`/campgrounds/${campground._id}?_method=PUT`, method="POST") 
-    div
-      label(for="title") Title:
-      input(type="text" id="title" name="campground[title]" value=`${campground.title}` )
-    div
-      label(for="location") Location (Address):
-      input(type="text" id="location" name="campground[location[address]]" value=`${campground.location}`)
-    button(type="submit") Save Changes
-    a(href=`/campgrounds/${campground._id}`) Back to #{campground.title}
-
+  div.col-md-6.mx-auto
+    h1.mt-5 Edit "#{campground.title}"!
+    //- todo: need to update edit form with location object props
+    form(action=`/campgrounds/${campground._id}?_method=PUT`, method="POST")
+      div.mb-3
+        label(for="title").form-label Title:
+        input(type="text" id="title" name="campground[title]" value=`${campground.title}`).form-control
+      div.mb-3
+        label(for="description").form-label Description:
+        textarea(id="description" name="campground[description]" ).form-control= campground.description 
+      .mb-3
+        label(for="price").form-label Price (per night):
+        div.input-group
+          span(class="input-group-text") $
+          input(type="number" id="price" name="campground[price]" value=`${campground.price}`).form-control
+      div.mb-3
+        label(for="address").form-label Street Address:
+        input(type="text" id="address" name="campground[location][address]" value=`${campground.location.address}`).form-control
+      div.mb-3
+        label(for="city").form-label City:
+        input(type="text" id="city" name="campground[location][city]" value=`${campground.location.city}`).form-control
+      div.mb-3.row
+        div.col
+          label(for="state").form-label State: 
+          select.form-select(id="state" name="campground[location][state]")
+            for state in states
+              if campground.location.state == state
+                option(value=`${state}` selected) #{state}
+              else  
+                option(value=`${state}`) #{state}
+        div.col
+          label(for="zipcode").form-label Zip Code:
+          input(type="text" id="zipcode" name="campground[location][zipcode]" value=`${campground.location.zipcode}`).form-control
+      div
+        button(type="submit").btn.btn-success.my-3 Update Campground

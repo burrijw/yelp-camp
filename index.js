@@ -1,5 +1,3 @@
-// ! Colt's Version
-
 const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
@@ -37,12 +35,10 @@ app.get("/campgrounds", async (req, res) => {
   res.render("campgrounds/index", { campgrounds });
 });
 
-// ! show the new campground form
 app.get("/campgrounds/new", (req, res) => {
   res.render("campgrounds/new", { states });
 });
 
-// ! Post a new campground to db and redir to that new campground
 app.post("/campgrounds", async (req, res) => {
   const campground = new Campground(req.body.campground);
   await campground.save();
@@ -57,7 +53,7 @@ app.get("/campgrounds/:id", async (req, res) => {
 app.get("/campgrounds/:id/edit", async (req, res) => {
   const { id } = req.params;
   const campground = await Campground.findById(id);
-  res.render("campgrounds/edit", { campground });
+  res.render("campgrounds/edit", { campground, states });
 });
 
 app.put("/campgrounds/:id", async (req, res) => {
