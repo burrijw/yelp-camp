@@ -7,10 +7,10 @@ block content
       img(src=`${campground.image}`, alt="image of a campground").mw-100
       p Price: $#{campground.price} per night
       p #{campground.description}
-      div.btn-group.btn-group-sm
+      div
         a(role="button" href=`/campgrounds/${campground._id}/edit`).btn.btn-primary  Edit
         form(action=`/campgrounds/${campground._id}?_method=DELETE`, method="POST")
-        button(type="submit").btn.btn-danger Delete
+          button(type="submit").btn.btn-danger Delete
     .col-md-6
       h2 Reviews
       p Lorem, ipsum dolor.
