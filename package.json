@@ -13,12 +13,13 @@
   "dependencies": {
     "express": "^4.17.1",
     "faker": "^5.5.3",
+    "joi": "^17.4.2",
     "mathjs": "^9.4.4",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.10.4",
+    "morgan": "^1.10.0",
     "pug": "^3.0.2",
     "pug-cli": "^1.0.0-alpha6",
-    "sugar": "^2.0.6",
-    "morgan": "^1.10.0",
-    "method-override": "^3.0.0",
-    "mongoose": "^5.10.4"
+    "sugar": "^2.0.6"
   }
 }
