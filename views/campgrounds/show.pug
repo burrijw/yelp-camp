@@ -13,5 +13,13 @@ block content
           button(type="submit").btn.btn-danger Delete
     .col-md-6
       h2 Reviews
-      p Lorem, ipsum dolor.
-      p Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque ipsum, rem deserunt dolorem nulla quas vel? In nobis tempore delectus quos voluptate excepturi, ad totam voluptatum, iusto consequuntur beatae sit, esse quaerat. Tempora voluptate, nulla molestias assumenda impedit a quisquam dicta molestiae fugit, distinctio ipsam!
+      .new-review-form.card
+        .card-body 
+          h4 Share your experience at #{campground.title}
+          form(action=`/campgrounds/${campground._id}/reviews` method="POST")
+            .col-sm-4
+              label(for="rating").form-label Rating 
+              input(type="range", name="review[rating]" min="1" max="5" id="rating").form-range
+            label(for="review-body").form-label Review
+            textarea(name="review[body]", cols="30", rows="4" id="review-body").form-control.mb-3
+            button(type="submit").btn.btn-primary Submit

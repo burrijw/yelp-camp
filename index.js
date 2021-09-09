@@ -11,7 +11,8 @@ const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
 const Campground = require('./models/campground');
-const campgroundSchema = require('./utils/validateCampground');
+const campgroundSchema = require('./utils/validationSchemas');
+const Review = require('./models/review');
 
 // !IMPORTS
 
@@ -32,6 +33,8 @@ mongoose.connection.once('open', () => {
 // Init the express app
 const app = express();
 
+// ANCHOR Set up view engine
+
 app.set('view engine', 'pug'); // Set the view engine for templates
 app.set('views', path.join(__dirname, 'views'));
 
@@ -41,7 +44,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(morgan('tiny'));
 
-// JOI middleware
+// ANCHOR JOI middleware
 
 const validateCampground = (req, res, next) => {
 	const { error } = campgroundSchema.validate(req.body);
@@ -51,9 +54,19 @@ const validateCampground = (req, res, next) => {
 	} else {
 		next();
 	}
+};
+
+const validateReview = (req, res, next) => {
+	const { error } = reviewSchema.validate(req.body);
+	if (error) {
+		const msg = error.details.map(el => el.message).join(',');
+		throw new ExpressError(msg, 400);
+	} else {
+		next();
+	}
 }
 
-// !SECTION: MIDDLEWARE
+// !SECTION
 
 /* ------------------------
   SECTION: ROUTES
@@ -65,6 +78,8 @@ app.get('/', (req, res) => {
 	// renders the home page
 	res.render('layout');
 });
+
+// SECTION: ROUTES -> CAMPGROUNDS
 
 app.get('/campgrounds', catchAsync(async (req, res) => {
 	// returns an index page with all campgrounds listed
@@ -112,7 +127,30 @@ app.delete('/campgrounds/:id', catchAsync(async (req, res) => {
 	await Campground.findByIdAndDelete(id);
 	res.redirect('/campgrounds');
 }));
-// !SECTION: ROUTES
+// !SECTION
+
+// SECTION: ROUTES -> REVIEWS
+
+// add a new review
+app.post('/campgrounds/:id/reviews', catchAsync(async (req, res) => {
+	// find campground to add review
+	const { id } = req.params;
+	const campground = await Campground.findById(id);
+	// create a new review and save to campground
+	const review = new Review(req.body.review);
+	campground.reviews.push(review);
+	await review.save();
+	await campground.save();
+	res.redirect(`/campgrounds/${campground._id}`);
+}))
+
+// edit a review
+
+// delete a review
+
+// !SECTION 
+
+// !SECTION
 
 // SECTION: ERROR HANDLERS
 
