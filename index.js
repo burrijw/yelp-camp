@@ -1,22 +1,30 @@
 /* ------------------------
-  IMPORTS
+SEC IMPORTS
 ------------------------ */
 
+//ANC Node Modules
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
-const states = require('./seed/states');
 const morgan = require('morgan');
-const catchAsync = require('./utils/catchAsync');
-const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
-const Campground = require('./models/campground');
-const campgroundSchema = require('./utils/validationSchemas');
-const Review = require('./models/review');
 
-// !IMPORTS
+//ANC Utilities
+const ExpressError = require('./utils/ExpressError');
+const { campgroundSchema, reviewSchema } = require('./utils/validationSchemas');
 
-// SECTION: CONNECT DATABASE
+//ANC Routes
+const campgroundRoutes = require('./routes/campgroundRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
+
+//ANC Init the express app
+const app = express();
+
+//!SEC
+
+/* ------------------------
+SEC CONNECT DATABASE	
+------------------------ */
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp', {
 	useNewUrlParser: true,
@@ -28,148 +36,62 @@ mongoose.connection.once('open', () => {
 	console.log('Database connected');
 });
 
-// !SECTION
+//!SEC
 
-// Init the express app
-const app = express();
-
-// ANCHOR Set up view engine
+/* ------------------------
+SEC VIEW ENGINE
+------------------------ */
 
 app.set('view engine', 'pug'); // Set the view engine for templates
 app.set('views', path.join(__dirname, 'views'));
 
-// SECTION: MIDDLEWARE
-
-app.use(express.urlencoded({ extended: true }));
-app.use(methodOverride('_method'));
-app.use(morgan('tiny'));
-
-// ANCHOR JOI middleware
-
-const validateCampground = (req, res, next) => {
-	const { error } = campgroundSchema.validate(req.body);
-	if (error) {
-		const msg = error.details.map(el => el.message).join(',');
-		throw new ExpressError(msg, 400);
-	} else {
-		next();
-	}
-};
-
-const validateReview = (req, res, next) => {
-	const { error } = reviewSchema.validate(req.body);
-	if (error) {
-		const msg = error.details.map(el => el.message).join(',');
-		throw new ExpressError(msg, 400);
-	} else {
-		next();
-	}
-}
-
-// !SECTION
-
 /* ------------------------
-  SECTION: ROUTES
+SEC: MIDDLEWARE
 ------------------------ */
 
-// TODO Move routes to their own file and import into index.js using express router
+app.use(express.urlencoded({ extended: true }));
+app.use(morgan('dev'));
+app.use(methodOverride('_method'));
+
+//!SEC
+
+/* ------------------------
+  SEC: ROUTING
+------------------------ */
+
+app.use('/campgrounds', campgroundRoutes);
+app.use('/campgrounds/:id/reviews', reviewRoutes);
 
 app.get('/', (req, res) => {
 	// renders the home page
 	res.render('layout');
 });
 
-// SECTION: ROUTES -> CAMPGROUNDS
+//!SEC
 
-app.get('/campgrounds', catchAsync(async (req, res) => {
-	// returns an index page with all campgrounds listed
-	const campgrounds = await Campground.find({});
-	res.render('campgrounds/index', { campgrounds });
-}));
+/* ------------------------
+SEC ERROR HANDLERS
+------------------------ */
 
-app.get('/campgrounds/new', (req, res) => {
-	res.render('campgrounds/new', { states });
-});
-
-app.post(
-	'/campgrounds',
-	validateCampground,
-	catchAsync(async (req, res) => {
-		// generate a new campground model using the info provided in form on 'campground/new'
-		const campground = new Campground(req.body.campground);
-		await campground.save();
-		res.redirect(`/campgrounds/${campground._id}`);
-	})
-);
-
-app.get('/campgrounds/:id', catchAsync(async (req, res) => {
-	const campground = await Campground.findById(req.params.id);
-	res.render('campgrounds/show', { campground });
-}));
-
-app.get('/campgrounds/:id/edit', catchAsync(async (req, res) => {
-	const { id } = req.params;
-	const campground = await Campground.findById(id);
-	res.render('campgrounds/edit', { campground, states });
-}));
-
-app.put('/campgrounds/:id', validateCampground, catchAsync(async (req, res) => {
-	const { id } = req.params;
-	const campground = await Campground.findByIdAndUpdate(id, {
-		// use the spread operator to include the entire campground object
-		...req.body.campground,
-	});
-	res.redirect(`/campgrounds/${campground._id}`);
-}));
-
-app.delete('/campgrounds/:id', catchAsync(async (req, res) => {
-	const { id } = req.params;
-	await Campground.findByIdAndDelete(id);
-	res.redirect('/campgrounds');
-}));
-// !SECTION
-
-// SECTION: ROUTES -> REVIEWS
-
-// add a new review
-app.post('/campgrounds/:id/reviews', catchAsync(async (req, res) => {
-	// find campground to add review
-	const { id } = req.params;
-	const campground = await Campground.findById(id);
-	// create a new review and save to campground
-	const review = new Review(req.body.review);
-	campground.reviews.push(review);
-	await review.save();
-	await campground.save();
-	res.redirect(`/campgrounds/${campground._id}`);
-}))
-
-// edit a review
-
-// delete a review
-
-// !SECTION 
-
-// !SECTION
-
-// SECTION: ERROR HANDLERS
-
-// ANCHOR: catch 404's
-
+//ANC catch 404's
 app.all('*', (req, res, next) => {
 	next(new ExpressError('Page not found', 404));
 })
 
-// ANCHOR: Misc Error handler
-
+//ANC Misc Error handler
 app.use((err, req, res, next) => {
 	const { statusCode = 500, message = 'something went wrong' } = err;
 	res.status(statusCode).render('error', { statusCode, message })
 });
 
-// !SECTION
+//!SEC
 
-// Init the server
+/* ------------------------
+SEC INIT SERVER
+------------------------ */
+
 app.listen(3000, () => {
 	console.log('Serving on port 3000');
 });
+
+//!SEC

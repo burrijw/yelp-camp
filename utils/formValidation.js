@@ -1,3 +1,5 @@
+// this is for bootstrap's client-side validation
+
 const forms = document.querySelectorAll('.needs-validation')
 Array.from(forms)
     .forEach(function (form) {
