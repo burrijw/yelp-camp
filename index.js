@@ -8,10 +8,11 @@ const path = require('path');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const methodOverride = require('method-override');
+const session = require('express-session');
+const flash = require('connect-flash');
 
 //ANC Utilities
 const ExpressError = require('./utils/ExpressError');
-const { campgroundSchema, reviewSchema } = require('./utils/validationSchemas');
 
 //ANC Routes
 const campgroundRoutes = require('./routes/campgroundRoutes');
@@ -54,6 +55,30 @@ app.use(morgan('dev'));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+//ANC Session configuration
+
+const sessionConfig = {
+	secret: 'thisshouldbebetter',
+	resave: false,
+	saveUninitialized: true,
+	cookie: {
+		httpOnly: true,
+		expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+		maxAge: 1000 * 60 * 60 * 24 * 7,
+	},
+};
+
+app.use(session(sessionConfig));
+
+//ANC Flash
+
+app.use(flash());
+app.use((req, res, next) => {
+	res.locals.success = req.flash('success');
+	res.locals.error = req.flash('error');
+	next();
+});
+
 //!SEC
 
 /* ------------------------
@@ -77,12 +102,12 @@ SEC ERROR HANDLERS
 //ANC catch 404's
 app.all('*', (req, res, next) => {
 	next(new ExpressError('Page not found', 404));
-})
+});
 
 //ANC Misc Error handler
 app.use((err, req, res, next) => {
 	const { statusCode = 500, message = 'something went wrong' } = err;
-	res.status(statusCode).render('error', { statusCode, message })
+	res.status(statusCode).render('error', { statusCode, message });
 });
 
 //!SEC
