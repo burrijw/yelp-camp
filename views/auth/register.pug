@@ -1,0 +1,23 @@
+extends ../layout
+block content
+	div.col-md-6.container.my-4
+		h2.my-3 Register for a new account!
+		form(action="/auth/register" method="POST" novalidate).needs-validation
+			label(for="email").form-label Email Address
+			input(type="email" id="email" name="email" required).form-control.mb-3
+
+			label(for="username").form-label Username
+			input(type="text" id="username" name="username" required).form-control.mb-3
+
+			label(for="password").form-label Password
+			input(type="password" id="password" name="password" required).form-control.mb3
+
+			.form-check.my-3
+				label(for="accept-terms").form-check-label I accept the #[a(href="#") Terms and Conditions].
+				input(type="checkbox" name="accepted-terms" id="accept-terms" required).form-check-input
+
+			button(type="submit").btn.btn-primary.my-3 Submit
+block scripts
+	script
+		include ../../utils/formValidation.js
+

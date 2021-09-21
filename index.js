@@ -10,23 +10,32 @@ const morgan = require('morgan');
 const methodOverride = require('method-override');
 const session = require('express-session');
 const flash = require('connect-flash');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+
 
 //ANC Utilities
 const ExpressError = require('./utils/ExpressError');
+const isLoggedIn = require('./middleware');
 
 //ANC Routes
 const campgroundRoutes = require('./routes/campgroundRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
+const userRoutes = require('./routes/userRoutes');
 
-//ANC Init the express app
-const app = express();
+//ANC Models
+const User = require('./models/user');
 
 //!SEC
 
 /* ------------------------
-SEC CONNECT DATABASE	
+SEC CONNECT DATABASE
 ------------------------ */
 
+//ANC Init the express app
+const app = express();
+
+//ANC Connect DB
 mongoose.connect('mongodb://localhost:27017/yelp-camp', {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
@@ -46,6 +55,8 @@ SEC VIEW ENGINE
 app.set('view engine', 'pug'); // Set the view engine for templates
 app.set('views', path.join(__dirname, 'views'));
 
+//!SEC
+
 /* ------------------------
 SEC: MIDDLEWARE
 ------------------------ */
@@ -55,7 +66,8 @@ app.use(morgan('dev'));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-//ANC Session configuration
+
+//ANC Session
 
 const sessionConfig = {
 	secret: 'thisshouldbebetter',
@@ -70,6 +82,15 @@ const sessionConfig = {
 
 app.use(session(sessionConfig));
 
+//ANC Passport
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 //ANC Flash
 
 app.use(flash());
@@ -81,10 +102,13 @@ app.use((req, res, next) => {
 
 //!SEC
 
+
+
 /* ------------------------
   SEC: ROUTING
 ------------------------ */
 
+app.use('/auth', userRoutes);
 app.use('/campgrounds', campgroundRoutes);
 app.use('/campgrounds/:id/reviews', reviewRoutes);
 

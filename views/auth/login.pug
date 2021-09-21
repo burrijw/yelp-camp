@@ -1,0 +1,16 @@
+extends ../layout
+block content
+	div.col-md-6.container.my-4
+		h2.my-3 Log in
+		form(action="/auth/login" method="POST" novalidate).needs-validation
+
+			label(for="username").form-label Username
+			input(type="text" id="username" name="username" required).form-control.mb-3
+
+			label(for="password").form-label Password
+			input(type="password" id="password" name="password" required).form-control.mb3
+
+			button(type="submit").btn.btn-primary.my-3 Submit
+block scripts
+	script
+		include ../../utils/formValidation.js

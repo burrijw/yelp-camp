@@ -9,6 +9,7 @@ const router = express.Router();
 //ANC Utils and Functions
 const catchAsync = require('../utils/catchAsync');
 const states = require('../seed/states');
+const { isLoggedIn } = require('../middleware');
 
 //ANC Models
 const { campgroundSchema } = require('../utils/validationSchemas');
@@ -43,12 +44,13 @@ router.get('/', catchAsync(async (req, res) => {
     res.render('campgrounds/index', { campgrounds });
 }));
 
-router.get('/new', (req, res) => {
+router.get('/new', isLoggedIn, (req, res) => {
     res.render('campgrounds/new', { states });
 });
 
 router.post(
     '/',
+    isLoggedIn,
     validateCampground,
     catchAsync(async (req, res) => {
         // generate a new campground model using the info provided in form on 'campground/new'
@@ -68,7 +70,7 @@ router.get('/:id', catchAsync(async (req, res) => {
     res.render('campgrounds/show', { campground });
 }));
 
-router.get('/:id/edit', catchAsync(async (req, res) => {
+router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findById(id);
     if (!campground) {
@@ -78,7 +80,7 @@ router.get('/:id/edit', catchAsync(async (req, res) => {
     res.render('campgrounds/edit', { campground, states });
 }));
 
-router.put('/:id', validateCampground, catchAsync(async (req, res) => {
+router.put('/:id', isLoggedIn, validateCampground, catchAsync(async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findByIdAndUpdate(id, {
         // use the spread operator to include the entire campground object
@@ -92,13 +94,13 @@ router.put('/:id', validateCampground, catchAsync(async (req, res) => {
     res.redirect(`/campgrounds/${campground._id}`);
 }));
 
-router.delete('/:id', catchAsync(async (req, res) => {
+router.delete('/:id', isLoggedIn, catchAsync(async (req, res) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
     req.flash('success', "The campground has been deleted.");
     res.redirect('/campgrounds');
 }));
 
-//!SEC 
+//!SEC
 
 module.exports = router;

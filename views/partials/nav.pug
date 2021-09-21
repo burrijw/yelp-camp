@@ -1,10 +1,13 @@
 nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.sticky-top
   .container-fluid
-    a.navbar-brand(href='#') Campsyte
+    a.navbar-brand(href='#') 🏕 Campsite
     button.navbar-toggler(type='button', data-bs-toggle='collapse', data-bs-target='#navbarNavAltMarkup', aria-controls='navbarNavAltMarkup', aria-expanded='false', aria-label='Toggle navigation')
       span.navbar-toggler-icon
-    #navbarNavAltMarkup.collapse.navbar-collapse
+    #navbarNavAltMarkup.collapse.navbar-collapse.justify-content-between
       .navbar-nav
-        a.nav-link.active(aria-current='page', href='/') Home
         a.nav-link(href='/campgrounds') Campgrounds
-        a.nav-link(href='/campgrounds/new') Add New Site  
+        a.nav-link(href='/campgrounds/new') Add New Site
+      .navbar-nav
+        a.nav-link(href='/auth/register') Register
+        a.nav-link(href='/auth/login') Sign In
+        a.nav-link(href='/auth/logout') Sign Out

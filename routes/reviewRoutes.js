@@ -9,6 +9,8 @@ const router = express.Router({ mergeParams: true });
 //ANC Utils
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
+const { isLoggedIn } = require('../middleware');
+
 
 //ANC Models
 const { reviewSchema } = require('../utils/validationSchemas');
@@ -40,7 +42,7 @@ SEC ROUTES
 ---------------------------------------- */
 
 // add a new review
-router.post('/', validateReview, catchAsync(async (req, res) => {
+router.post('/', isLoggedIn, validateReview, catchAsync(async (req, res) => {
     // find campground to add review
     const { id } = req.params;
     const campground = await Campground.findById(id);
@@ -55,7 +57,7 @@ router.post('/', validateReview, catchAsync(async (req, res) => {
 // edit a review
 
 // delete a review
-router.delete('/:reviewId', catchAsync(async (req, res) => {
+router.delete('/:reviewId', isLoggedIn, catchAsync(async (req, res) => {
     const { id, reviewId } = req.params;
     await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
     await Review.findByIdAndDelete(reviewId);
