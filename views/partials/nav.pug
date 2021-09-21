@@ -8,6 +8,9 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.sticky-top
         a.nav-link(href='/campgrounds') Campgrounds
         a.nav-link(href='/campgrounds/new') Add New Site
       .navbar-nav
-        a.nav-link(href='/auth/register') Register
-        a.nav-link(href='/auth/login') Sign In
-        a.nav-link(href='/auth/logout') Sign Out
+        if !currentUser
+          a.nav-link(href='/auth/register') Register
+          a.nav-link(href='/auth/login') Sign In
+        else
+          a.nav-link(href='/auth/logout') Sign Out
+

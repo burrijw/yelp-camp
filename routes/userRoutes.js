@@ -32,8 +32,11 @@ router.post(
             const { email, username, password } = req.body;
             const tempUser = new User({ username, email });
             const user = await User.register(tempUser, password);
-            req.flash('success', 'Welcome to Campsite!');
-            res.redirect('/campgrounds');
+            req.login(user, (err) => {
+                if (err) return next(err);
+                req.flash('success', 'Welcome to Campsite!');
+                res.redirect('/campgrounds');
+            });
         } catch (e) {
             req.flash('error', e.message);
             res.redirect('/auth/register');
@@ -50,8 +53,9 @@ router.get('/login', (req, res) => {
 router.post('/login',
     passport.authenticate('local', { failureFlash: true, failureRedirect: '/auth/login' }),
     (req, res) => {
+        const redirectUrl = req.session.returnTo || '/campgrounds';
         req.flash('success', 'You have logged in successfully.');
-        res.redirect('/campgrounds');
+        res.redirect(redirectUrl);
     }
 );
 
