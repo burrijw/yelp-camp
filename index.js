@@ -3,6 +3,7 @@ SEC IMPORTS
 ------------------------ */
 
 //ANC Node Modules
+
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -15,15 +16,18 @@ const LocalStrategy = require('passport-local');
 
 
 //ANC Utilities
+
 const ExpressError = require('./utils/ExpressError');
 const isLoggedIn = require('./middleware');
 
 //ANC Routes
+
 const campgroundRoutes = require('./routes/campgroundRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const userRoutes = require('./routes/userRoutes');
 
 //ANC Models
+
 const User = require('./models/user');
 
 //!SEC
@@ -95,7 +99,8 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use(flash());
 
-//ANC Locals
+//ANC Locals 
+
 app.use((req, res, next) => {
 	if (!['/login', '/'].includes(req.originalUrl)) {
 		req.session.returnTo = req.originalUrl;
@@ -107,8 +112,6 @@ app.use((req, res, next) => {
 });
 
 //!SEC
-
-
 
 /* ------------------------
   SEC: ROUTING
@@ -130,11 +133,13 @@ SEC ERROR HANDLERS
 ------------------------ */
 
 //ANC catch 404's
+
 app.all('*', (req, res, next) => {
 	next(new ExpressError('Page not found', 404));
 });
 
 //ANC Misc Error handler
+
 app.use((err, req, res, next) => {
 	const { statusCode = 500, message = 'something went wrong' } = err;
 	res.status(statusCode).render('error', { statusCode, message });

@@ -7,6 +7,7 @@ block content
 			img(src=`${campground.image}`, alt="image of a campground").mw-100
 			p Price: $#{campground.price} per night
 			p #{campground.description}
+			p Submitted by #{campground.author.username}
 			div
 				a(role="button" href=`/campgrounds/${campground._id}/edit`).btn.btn-primary  Edit
 				form(action=`/campgrounds/${campground._id}?_method=DELETE` method="POST")
@@ -17,7 +18,7 @@ block content
 				each review in campground.reviews
 					div.review.card.my-3
 						.card-body.row
-							.review-content.col-10 
+							.review-content.col-10
 								p #{review.rating} Stars
 								p #{review.body}
 							.delete.col-2.d-flex.flex-column.justify-content-center

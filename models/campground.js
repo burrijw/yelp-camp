@@ -26,6 +26,10 @@ const CampgroundSchema = new Schema({
 		state: String,
 		zipcode: String,
 	},
+	author: {
+		type: Schema.Types.ObjectId,
+		ref: 'User'
+	},
 	reviews: [
 		{
 			type: Schema.Types.ObjectId,

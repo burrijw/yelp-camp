@@ -31,6 +31,7 @@ const seedData = async () => {
         state: state,
         zipcode: faker.address.zipCodeByState(state),
       },
+      author: '61402e6154beb98713a507bd'
     });
     await camp.save();
     console.log(`added new site to db`);
