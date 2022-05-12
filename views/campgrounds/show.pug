@@ -8,32 +8,39 @@ block content
 			p Price: $#{campground.price} per night
 			p #{campground.description}
 			p Submitted by #{campground.author.username}
-			div
-				a(role="button" href=`/campgrounds/${campground._id}/edit`).btn.btn-primary  Edit
-				form(action=`/campgrounds/${campground._id}?_method=DELETE` method="POST")
-					button(type="submit").btn.btn-danger Delete
+			if currentUser && campground.author.equals(currentUser._id)
+				div
+					a(role="button" href=`/campgrounds/${campground._id}/edit`).btn.btn-primary  Edit
+					form(action=`/campgrounds/${campground._id}?_method=DELETE` method="POST")
+						button(type="submit").btn.btn-danger.mt-2 Delete
 		.col-md-6
 			h2 Reviews
 			.reviews
+				if !campground.review
+					p No reviews
 				each review in campground.reviews
 					div.review.card.my-3
 						.card-body.row
 							.review-content.col-10
-								p #{review.rating} Stars
+								if review.rating === 1
+									p #{review.rating} Star
+								else
+									p #{review.rating} Stars
 								p #{review.body}
 							.delete.col-2.d-flex.flex-column.justify-content-center
 									form(action=`/campgrounds/${campground._id}/reviews/${review._id}?_method=DELETE` method="POST")
 										button(type="submit").btn.btn-danger.btn-sm Delete
-			.new-review-form.card
-				.card-body
-					h5 Share your experience at #{campground.title}
-					form(action=`/campgrounds/${campground._id}/reviews` method="POST" novalidate).needs-validation
-						.col-sm-4
-							label(for="rating").form-label Rating
-							input(type="range" name="review[rating]" min="1" max="5" id="rating" required).form-range
-						label(for="review-body").form-label Review
-						textarea(name="review[body]" cols="30" rows="4" id="review-body" required).form-control.mb-3
-						button(type="submit").btn.btn-success Submit
+			if currentUser
+				.new-review-form.card
+					.card-body
+						h5 Share your experience at #{campground.title}
+						form(action=`/campgrounds/${campground._id}/reviews` method="POST" novalidate).needs-validation
+							.col-sm-4
+								label(for="rating").form-label Rating
+								input(type="range" name="review[rating]" min="1" max="5" id="rating" required).form-range
+							label(for="review-body").form-label Review
+							textarea(name="review[body]" cols="30" rows="4" id="review-body" required).form-control.mb-3
+							button(type="submit").btn.btn-success Submit
 block scripts
 	script
 		include ../../utils/formValidation.js

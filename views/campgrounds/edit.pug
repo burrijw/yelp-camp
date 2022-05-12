@@ -9,8 +9,8 @@ block content
         input(type="text" id="title" name="campground[title]" value=`${campground.title}` required).form-control
       div.mb-3
         label(for="description").form-label Description:
-        textarea(id="description" name="campground[description]"  required).form-control= campground.description 
-      .mb-3
+        textarea(id="description" name="campground[description]"  required).form-control= campground.description
+      div.mb-3
         label(for="price").form-label Price (per night):
         div.input-group
           span(class="input-group-text") $
@@ -23,12 +23,12 @@ block content
         input(type="text" id="city" name="campground[location][city]" value=`${campground.location.city}` required).form-control
       div.mb-3.row
         div.col
-          label(for="state").form-label State: 
+          label(for="state").form-label State:
           select.form-select(id="state" name="campground[location][state]" required)
             for state in states
               if campground.location.state == state
                 option(value=`${state}` selected) #{state}
-              else  
+              else
                 option(value=`${state}`) #{state}
         div.col
           label(for="zipcode").form-label Zip Code:
@@ -36,5 +36,5 @@ block content
       div
         button(type="submit").btn.btn-success.my-3 Update Campground
 block scripts
-  script 
+  script
     include ../../utils/formValidation.js

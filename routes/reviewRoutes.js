@@ -8,34 +8,14 @@ const router = express.Router({ mergeParams: true });
 
 //ANC Utils
 const catchAsync = require('../utils/catchAsync');
-const ExpressError = require('../utils/ExpressError');
-const { isLoggedIn } = require('../middleware');
+const { isLoggedIn, validateReview } = require('../middleware');
 
 
 //ANC Models
-const { reviewSchema } = require('../utils/validationSchemas');
 const Review = require('../models/review');
 const Campground = require('../models/campground');
 
 //!SEC
-
-/* ----------------------------------------
-SEC MIDDLEWARE
----------------------------------------- */
-
-const validateReview = (req, res, next) => {
-    const { error } = reviewSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',');
-        throw new ExpressError(msg, 400);
-    } else {
-        console.log('a valid review was submitted.');
-        next();
-    }
-};
-
-// !SEC
-
 
 /* ----------------------------------------
 SEC ROUTES
@@ -48,9 +28,11 @@ router.post('/', isLoggedIn, validateReview, catchAsync(async (req, res) => {
     const campground = await Campground.findById(id);
     // create a new review and save to campground
     const review = new Review(req.body.review);
+    review.author = req.user._id;
     campground.reviews.push(review);
     await review.save();
     await campground.save();
+    req.flash('success', "Your review has been added successfully.")
     res.redirect(`/campgrounds/${campground._id}`);
 }))
 

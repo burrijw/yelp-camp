@@ -9,7 +9,6 @@ const passport = require('passport');
 
 //ANC Utilities / Middleware
 const catchAsync = require('../utils/catchAsync');
-const { isLoggedIn } = require('../middleware');
 
 //ANC Models
 const User = require('../models/user');
@@ -54,6 +53,7 @@ router.post('/login',
     passport.authenticate('local', { failureFlash: true, failureRedirect: '/auth/login' }),
     (req, res) => {
         const redirectUrl = req.session.returnTo || '/campgrounds';
+        delete req.session.returnTo;
         req.flash('success', 'You have logged in successfully.');
         res.redirect(redirectUrl);
     }

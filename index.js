@@ -18,7 +18,6 @@ const LocalStrategy = require('passport-local');
 //ANC Utilities
 
 const ExpressError = require('./utils/ExpressError');
-const isLoggedIn = require('./middleware');
 
 //ANC Routes
 
@@ -99,7 +98,7 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use(flash());
 
-//ANC Locals 
+//ANC Locals
 
 app.use((req, res, next) => {
 	if (!['/login', '/'].includes(req.originalUrl)) {
