@@ -11,7 +11,9 @@ const passport = require('passport');
 const catchAsync = require('../utils/catchAsync');
 
 //ANC Models
-const User = require('../models/user');
+
+//ANC Controller
+const user = require('../controllers/userController')
 
 // !SEC
 
@@ -19,51 +21,36 @@ const User = require('../models/user');
 SEC ROUTES
 ---------------------------------------- */
 //ANC New user registration form
-router.get('/register', (req, res) => {
-    res.render('auth/register');
-});
+router.get(
+    '/register',
+    user.renderNewUserForm
+);
 
 //ANC Create a new user
 router.post(
     '/register',
-    catchAsync(async (req, res) => {
-        try {
-            const { email, username, password } = req.body;
-            const tempUser = new User({ username, email });
-            const user = await User.register(tempUser, password);
-            req.login(user, (err) => {
-                if (err) return next(err);
-                req.flash('success', 'Welcome to Campsite!');
-                res.redirect('/campgrounds');
-            });
-        } catch (e) {
-            req.flash('error', e.message);
-            res.redirect('/auth/register');
-        }
-    })
+    catchAsync(user.createUser)
 );
 
 //ANC Show the login form
-router.get('/login', (req, res) => {
-    res.render('auth/login');
-});
-
-//ANC Check login for valid credentials, redir to campgrounds on success
-router.post('/login',
-    passport.authenticate('local', { failureFlash: true, failureRedirect: '/auth/login' }),
-    (req, res) => {
-        const redirectUrl = req.session.returnTo || '/campgrounds';
-        delete req.session.returnTo;
-        req.flash('success', 'You have logged in successfully.');
-        res.redirect(redirectUrl);
-    }
+router.get(
+    '/login',
+    user.renderLoginForm
 );
 
-router.get('/logout', (req, res) => {
-    req.logout();
-    req.flash('success', 'You have successfully been signed out.');
-    res.redirect('/campgrounds')
-})
+// TODO Move user functions back to routes, maybe.
+
+//ANC Check login for valid credentials, redir to campgrounds on success
+router.post(
+    '/login',
+    passport.authenticate('local', { failureFlash: true, failureRedirect: '/auth/login' }),
+    user.login
+);
+
+router.get(
+    '/logout',
+    user.logout
+)
 
 // !SEC
 

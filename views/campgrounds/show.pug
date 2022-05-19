@@ -27,9 +27,12 @@ block content
 								else
 									p #{review.rating} Stars
 								p #{review.body}
-							.delete.col-2.d-flex.flex-column.justify-content-center
-									form(action=`/campgrounds/${campground._id}/reviews/${review._id}?_method=DELETE` method="POST")
-										button(type="submit").btn.btn-danger.btn-sm Delete
+								if review.author
+									p.fw-light.fst-italic #{review.author.username}
+							if currentUser && review.author.equals(currentUser._id)
+								.delete.col-2.d-flex.flex-column.justify-content-center
+										form(action=`/campgrounds/${campground._id}/reviews/${review._id}?_method=DELETE` method="POST")
+											button(type="submit").btn.btn-danger.btn-sm Delete
 			if currentUser
 				.new-review-form.card
 					.card-body

@@ -1,4 +1,4 @@
-const faker = require("faker");
+const { faker } = require("@faker-js/faker");
 const mongoose = require("mongoose");
 const Campground = require("../models/campground");
 const Sugar = require("sugar");
