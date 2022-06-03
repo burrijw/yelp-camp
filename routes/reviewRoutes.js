@@ -19,20 +19,18 @@ const reviews = require('../controllers/reviewsController');
 SEC ROUTES
 ---------------------------------------- */
 
-// add a new review
-router.post(
-    '/',
-    isLoggedIn,
-    validateReview,
-    catchAsync(reviews.createReview)
-)
+router.route('/')
+    .post(
+        isLoggedIn,
+        validateReview,
+        catchAsync(reviews.createReview)
+    )
 
-// delete a review
-router.delete(
-    '/:reviewId',
-    isLoggedIn,
-    catchAsync(reviews.deleteReview)
-)
+router.route('/:reviewId')
+    .delete(
+        isLoggedIn,
+        catchAsync(reviews.deleteReview)
+    )
 
 // !SEC
 

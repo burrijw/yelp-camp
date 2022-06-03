@@ -10,8 +10,6 @@ const passport = require('passport');
 //ANC Utilities / Middleware
 const catchAsync = require('../utils/catchAsync');
 
-//ANC Models
-
 //ANC Controller
 const user = require('../controllers/userController')
 
@@ -20,37 +18,20 @@ const user = require('../controllers/userController')
 /* ----------------------------------------
 SEC ROUTES
 ---------------------------------------- */
-//ANC New user registration form
-router.get(
-    '/register',
-    user.renderNewUserForm
-);
 
-//ANC Create a new user
-router.post(
-    '/register',
-    catchAsync(user.createUser)
-);
+router.route('/register')
+    .get(user.renderNewUserForm)
+    .post(catchAsync(user.createUser))
 
-//ANC Show the login form
-router.get(
-    '/login',
-    user.renderLoginForm
-);
+router.route('/login')
+    .get(user.renderLoginForm)
+    .post(
+        passport.authenticate('local', { failureFlash: true, failureRedirect: '/auth/login' }),
+        user.login
+    )
 
-// TODO Move user functions back to routes, maybe.
-
-//ANC Check login for valid credentials, redir to campgrounds on success
-router.post(
-    '/login',
-    passport.authenticate('local', { failureFlash: true, failureRedirect: '/auth/login' }),
-    user.login
-);
-
-router.get(
-    '/logout',
-    user.logout
-)
+router.route('/logout')
+    .get(user.logout)
 
 // !SEC
 

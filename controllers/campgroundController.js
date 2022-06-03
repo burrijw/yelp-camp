@@ -13,7 +13,6 @@ module.exports.renderNewForm = (req, res) => {
 
 // Process for input to create a new campground and save it to the db
 module.exports.createCampground = async (req, res) => {
-    // generate a new campground model using the info provided in form on 'campground/new'
     const campground = new Campground(req.body.campground);
     campground.author = req.user._id;
     await campground.save();

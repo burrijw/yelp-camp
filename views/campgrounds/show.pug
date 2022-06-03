@@ -1,5 +1,6 @@
 extends ../layout
 block content
+	link(rel="stylesheet" href="/styles/stars.css")
 	h1.my-3= campground.title
 	.row.mt-3.gx-5
 		.col-md-6
@@ -22,10 +23,12 @@ block content
 					div.review.card.my-3
 						.card-body.row
 							.review-content.col-10
-								if review.rating === 1
-									p #{review.rating} Star
-								else
-									p #{review.rating} Stars
+								//- if review.rating === 1
+								//- 	p #{review.rating} Star
+								//- else
+								//- 	p #{review.rating} Stars
+								//- TODO Replace these trash stars with something custom
+								p(class="starability-result" data-rating=review.rating ) Rated: #{review.rating}
 								p #{review.body}
 								if review.author
 									p.fw-light.fst-italic #{review.author.username}
@@ -39,8 +42,18 @@ block content
 						h5 Share your experience at #{campground.title}
 						form(action=`/campgrounds/${campground._id}/reviews` method="POST" novalidate).needs-validation
 							.col-sm-4
-								label(for="rating").form-label Rating
-								input(type="range" name="review[rating]" min="1" max="5" id="rating" required).form-range
+								fieldset.starability-grow
+									input#no-rate.input-no-rate(type='radio' name='review[rating]' value='1' checked='' aria-label='No rating.')
+									input#first-rate1(type='radio' name='review[rating]' value='1')
+									label(for='first-rate1' title='Terrible') 1 star
+									input#first-rate2(type='radio' name='review[rating]' value='2')
+									label(for='first-rate2' title='Not good') 2 stars
+									input#first-rate3(type='radio' name='review[rating]' value='3')
+									label(for='first-rate3' title='Average') 3 stars
+									input#first-rate4(type='radio' name='review[rating]' value='4')
+									label(for='first-rate4' title='Very good') 4 stars
+									input#first-rate5(type='radio' name='review[rating]' value='5')
+									label(for='first-rate5' title='Amazing') 5 stars
 							label(for="review-body").form-label Review
 							textarea(name="review[body]" cols="30" rows="4" id="review-body" required).form-control.mb-3
 							button(type="submit").btn.btn-success Submit

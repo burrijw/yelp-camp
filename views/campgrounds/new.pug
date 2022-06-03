@@ -26,16 +26,19 @@ block content
         input(type="text" id="city" name="campground[location][city]" required).form-control
       div.mb-3.row
         div.col
-          label(for="state").form-label State: 
+          label(for="state").form-label State:
           select.form-select(id="state" name="campground[location][state]" required)
             for state in states
               option(value=`${state}`) #{state}
         div.col
           label(for="zipcode").form-label Zip Code:
           input(type="text" id="zipcode" name="campground[location][zipcode]" required).form-control
+      .mb-3
+        label.form-label(for='formFileMultiple') Images:
+        input.form-control#formFileMultiple(type='file' multiple)
       div
         button(type="submit").btn.btn-success.my-3 Add Campground
 block scripts
-  script 
+  script
     include ../../utils/formValidation.js
 
