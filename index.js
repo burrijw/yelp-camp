@@ -1,6 +1,9 @@
 /* ------------------------
 SEC IMPORTS
 ------------------------ */
+if (process.env.NODE_ENV !== "production") {
+	require('dotenv').config();
+}
 
 //ANC Node Modules
 

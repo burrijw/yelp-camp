@@ -5,6 +5,9 @@
 //ANC Node Modules
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const { storage } = require('../cloudinary');
+const upload = multer({ storage });''
 
 //ANC Controllers
 const campground = require('../controllers/campgroundController');
@@ -25,6 +28,7 @@ router.route('/')
     // create a new campground
     .post(
         isLoggedIn,
+        upload.array('image'),
         validateCampground,
         catchAsync(campground.createCampground)
     );
@@ -43,6 +47,7 @@ router.route('/:id')
     .put(
         isLoggedIn,
         isAuthor,
+        upload.array('image'),
         validateCampground,
         catchAsync(campground.updateCampground)
     )

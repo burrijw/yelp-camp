@@ -3,7 +3,7 @@ block content
   div.col-md-6.mx-auto
     h1.mt-5 Edit "#{campground.title}"!
     //- todo: need to update edit form with location object props
-    form(action=`/campgrounds/${campground._id}?_method=PUT`, method="POST" class="needs-validation" novalidate)
+    form(action=`/campgrounds/${campground._id}?_method=PUT`, method="POST" class="needs-validation" novalidate enctype="multipart/form-data")
       div.mb-3
         label(for="title").form-label Title:
         input(type="text" id="title" name="campground[title]" value=`${campground.title}` required).form-control
@@ -33,6 +33,9 @@ block content
         div.col
           label(for="zipcode").form-label Zip Code:
           input(type="text" id="zipcode" name="campground[location][zipcode]" value=`${campground.location.zipcode}` required).form-control
+      .mb-3
+        label.form-label(for='image') Images:
+        input.form-control(type='file' name="image" id="image" multiple)
       div
         button(type="submit").btn.btn-success.my-3 Update Campground
 block scripts

@@ -2,7 +2,7 @@ extends ../layout
 block content
   div.col-md-6.mx-auto
     h1.my-4 Add a new campsite
-    form(action="/campgrounds" method="POST" class="needs-validation" novalidate)
+    form(action="/campgrounds" method="POST" class="needs-validation" novalidate enctype="multipart/form-data")
       div.mb-3
         label(for="title").form-label Title:
         input(type="text" id="title" name="campground[title]" required).form-control
@@ -35,7 +35,7 @@ block content
           input(type="text" id="zipcode" name="campground[location][zipcode]" required).form-control
       .mb-3
         label.form-label(for='formFileMultiple') Images:
-        input.form-control#formFileMultiple(type='file' multiple)
+        input.form-control(type='file' name="image" id="image" multiple)
       div
         button(type="submit").btn.btn-success.my-3 Add Campground
 block scripts
