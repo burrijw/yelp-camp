@@ -5,7 +5,21 @@ block content
 	.row.mt-3.gx-5
 		.col-md-6
 			h2 #{campground.location.city}, #{campground.location.state}
-			img(src=`${campground.image}`, alt="image of a campground").mw-100
+			//- img(src=`${campground.image}`, alt="image of a campground").mw-100
+			#carouselExampleControls.carousel.slide(data-bs-ride='carousel')
+				.carousel-inner
+					each img, i in campground.images
+						//- add 'active' class only on the first iteration
+						div.carousel-item(class=i === 0 ? 'active' : '')
+							img.d-block.w-100(src=`${img.url}` alt='')
+					//- only show controls if there are multiple images
+					if campground.images.length > 1
+						button.carousel-control-prev(type='button' data-bs-target='#carouselExampleControls' data-bs-slide='prev')
+							span.carousel-control-prev-icon(aria-hidden='true')
+							span.visually-hidden Previous
+						button.carousel-control-next(type='button' data-bs-target='#carouselExampleControls' data-bs-slide='next')
+							span.carousel-control-next-icon(aria-hidden='true')
+							span.visually-hidden Next
 			p Price: $#{campground.price} per night
 			p #{campground.description}
 			p Submitted by #{campground.author.username}
@@ -23,10 +37,6 @@ block content
 					div.review.card.my-3
 						.card-body.row
 							.review-content.col-10
-								//- if review.rating === 1
-								//- 	p #{review.rating} Star
-								//- else
-								//- 	p #{review.rating} Stars
 								//- TODO Replace these trash stars with something custom
 								p(class="starability-result" data-rating=review.rating ) Rated: #{review.rating}
 								p #{review.body}

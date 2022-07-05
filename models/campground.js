@@ -1,3 +1,4 @@
+const { string } = require("joi");
 const mongoose = require("mongoose");
 const Review = require('./review');
 const Schema = mongoose.Schema;
@@ -7,10 +8,17 @@ const CampgroundSchema = new Schema({
 		type: String,
 		required: true,
 	},
-	image: {
-		type: String,
-		default: "https://source.unsplash.com/collection/220381/1600x900",
-	},
+	images: [
+		{
+			url: String,
+			filename: String
+		}
+	],
+	// {
+	// 	type: String,
+	// 	default: "https://source.unsplash.com/collection/220381/1600x900",
+	// }
+
 	price: {
 		type: String,
 		default: "0.00",
